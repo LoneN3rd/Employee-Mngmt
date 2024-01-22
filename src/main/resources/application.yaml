@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:8889/hr?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true&verifyServerCertificate=false
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+app:
+  name: HRMS
+  version: 0.0.1
+server:
+  port: 9090
+  servlet:
+    context-path: /hr/v1
