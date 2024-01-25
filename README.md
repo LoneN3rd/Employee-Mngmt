@@ -1,5 +1,5 @@
-# EmployeeCRUD
-A simple SPringboot project that 
+# Employee Info Management
+A simple Springboot project that 
 - creates an employee,
 - updates employee information,
 - deletes an employee (updates delete status, not actually deleting) and,
