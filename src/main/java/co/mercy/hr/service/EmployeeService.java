@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EmployeeService {
-    List<Employee> getEmployees();
+    List<Employee> getEmployees(int pageNumber, int pageSize);
     Optional<Employee> getEmployee(Long id);
-
-    List<Employee> getEmployeeByName(String fname, String lname);
+    List<Employee> getEmployeesByFnameOrLname(String fname, String lname, int pageNumber, int pageSize);
     Employee createEmployee(Employee employee);
-
     Employee updateEmployee(Employee employee);
-
-    void deleteEmployeeById(Long id);
+    Integer deleteEmployeeById(Long id);
+    List<Employee> getEmployeesByDepartment(String department, int pageNumber, int pageSize);
+    List<Employee> getEmployeesByFnameAndLname(String fname, String lname, int pageNumber, int pageSize);
+    List<Employee> getEmployeeByAddressContaining(String keyword, int pageNumber, int pageSize);
 }

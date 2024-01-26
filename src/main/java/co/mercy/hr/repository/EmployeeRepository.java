@@ -1,25 +1,43 @@
 package co.mercy.hr.repository;
 
 import co.mercy.hr.model.Employee;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends PagingAndSortingRepository<Employee, Long> {
 
-    @Query("select e from tbl_employee e where e.fname = ?1 or e.lname = ?2")
-    List<Employee> findByName(String fname, String lname);
+    // @Query("select e from tbl_employee e where e.fname = ?1 or e.lname = ?2")
+    // List<Employee> findByFnameOrLname(String fname, String lname);
+
+    List<Employee> findByFnameOrLname(String fname, String lname, Pageable pages);
+
+    List<Employee> findByFnameAndLname(String fname, String lname, Pageable pages);
 
     @Modifying
     @Transactional
-    @Query("update tbl_employee e set e.isDeleted=1 where e.id = ?1")
-    void deleteEmployeeById(Long id);
+    @Query("update tbl_employee set isDeleted=1 where id = :id")
+    Integer deleteEmployeeById(Long id);
 
-    @Query("select e from tbl_employee e where e.isDeleted = 0")
-    List<Employee> findAll();
+    @Query("from tbl_employee where isDeleted = :isDeleted")
+    Page<Employee> getValidEmployees(Integer isDeleted, Pageable pages);
+
+    List<Employee> findByDepartment(String department, Pageable pages);
+
+    //List<Employee> findByDepartmentName(String department, Pageable pages);
+
+    List<Employee> findByAddressContaining(String keyword, Pageable pages);
+
+    Optional<Employee> findById(Long id);
+
+    Employee save(Employee employee);
 }

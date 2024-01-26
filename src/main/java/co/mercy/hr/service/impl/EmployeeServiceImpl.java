@@ -4,6 +4,9 @@ import co.mercy.hr.model.Employee;
 import co.mercy.hr.repository.EmployeeRepository;
 import co.mercy.hr.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,12 +14,13 @@ import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-
     @Autowired
     private EmployeeRepository employeeRepository;
     @Override
-    public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
+    public List<Employee> getEmployees(int pageNumber, int pageSize) {
+        Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
+        // return employeeRepository.findAll(pages).getContent();
+        return employeeRepository.getValidEmployees(0, pages).getContent();
     }
 
     @Override
@@ -25,8 +29,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getEmployeeByName(String fname, String lname) {
-        return employeeRepository.findByName(fname, lname);
+    public List<Employee> getEmployeesByFnameOrLname(String fname, String lname, int pageNumber, int pageSize) {
+        Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
+        return employeeRepository.findByFnameOrLname(fname, lname, pages);
     }
 
     @Override
@@ -40,8 +45,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployeeById(Long id) {
-        employeeRepository.deleteEmployeeById(id);
+    public Integer deleteEmployeeById(Long id) {
+        return employeeRepository.deleteEmployeeById(id);
     }
 
+    @Override
+    public List<Employee> getEmployeesByDepartment(String department, int pageNumber, int pageSize) {
+        Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
+        return employeeRepository.findByDepartment(department, pages);
+    }
+
+    @Override
+    public List<Employee> getEmployeesByFnameAndLname(String fname, String lname, int pageNumber, int pageSize) {
+        Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
+        return employeeRepository.findByFnameAndLname(fname, lname, pages);
+    }
+
+    @Override
+    public List<Employee> getEmployeeByAddressContaining(String keyword, int pageNumber, int pageSize) {
+        Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
+        // Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        return employeeRepository.findByAddressContaining(keyword, pages);
+    }
 }
