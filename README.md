@@ -12,11 +12,11 @@ A simple Springboot project that
 - gets app info (demonstrates use of enviroment properties)
 
 # Concepts Covered
-Data persistence using MySQl
-JPA and JPQL
-Input validation
-Pagination and sorting
-Documentation using Swagger
+- Data persistence using MySQl
+- JPA and JPQL
+- Input validation
+- Pagination and sorting
+- Documentation using Swagger
 
 # DB Used
 MySQL
