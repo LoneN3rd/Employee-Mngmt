@@ -9,7 +9,14 @@ A simple Springboot project that
   - Get employees by first name OR last name
   - Get employees by first name AND last name
   - Get employees by department
-- Get app info (demonstrates use of enviroment variables)
+- gets app info (demonstrates use of enviroment properties)
+
+# Concepts Covered
+Data persistence using MySQl
+JPA and JPQL
+Input validation
+Pagination and sorting
+Documentation using Swagger
 
 # DB Used
 MySQL
