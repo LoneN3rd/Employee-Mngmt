@@ -12,8 +12,12 @@ A simple Springboot project that
 - gets app info (demonstrates use of enviroment properties)
 
 # Concepts Covered
-- Data persistence using MySQl
-- JPA and JPQL
+- Data persistence using MySQL
+  - JPA, JPQL
+  - One to one mapping
+  - One to many mapping
+  - One to one mapping: Bi-directional
+  - One to many mapping: Bi-directional
 - Input validation
 - Pagination and sorting
 - Documentation using Swagger
