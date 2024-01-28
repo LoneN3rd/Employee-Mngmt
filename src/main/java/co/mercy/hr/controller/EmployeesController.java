@@ -11,7 +11,6 @@ import lombok.Data;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +29,8 @@ public class EmployeesController {
     @Autowired
     private EmployeeService employeeService;
 
-    //@Autowired
-    //private DepartmentService departmentService;
+    @Autowired
+    private DepartmentService departmentService;
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -48,6 +47,7 @@ public class EmployeesController {
     }
     @GetMapping("/all")
     public ResponseEntity<List<Employee>> getEmployees(@RequestParam Integer pageNumber, @RequestParam Integer pageSize){
+        System.out.println("Getting all employees");
         return new ResponseEntity<>(employeeService.getEmployees(pageNumber, pageSize), HttpStatus.OK);
     }
 
@@ -62,24 +62,25 @@ public class EmployeesController {
 
     @GetMapping("/findByFnameOrLname/{name}")
     public ResponseEntity<List<Employee>> getEmployeesByFnameOrLname(@PathVariable String name, @RequestParam Integer pageNumber, @RequestParam Integer pageSize){
-        System.out.println("Getting employee with name " + name + "...");
+        System.out.println("Getting employee with fname " + name +" or lname "+ name +"...");
         return new ResponseEntity<>(employeeService.getEmployeesByFnameOrLname(name, name, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<Employee>> searchEmployeeByFnameOrLname(@RequestParam String name, @RequestParam Integer pageNumber, @RequestParam Integer pageSize){
-        System.out.println("Searching employee with name " + name +"...");
+        System.out.println("Getting employee with fname " + name +" or lname "+ name +"...");
         return new ResponseEntity<>(employeeService.getEmployeesByFnameOrLname(name, name, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/findByFnameAndLname")
     public ResponseEntity<List<Employee>> getEmployeesByFnameAndLname(@RequestParam String fname, @RequestParam String lname, @RequestParam Integer pageNumber, @RequestParam Integer pageSize){
+        System.out.println("Getting employee with fname " + fname +" and lname "+ lname +"...");
         return new ResponseEntity<>(employeeService.getEmployeesByFnameAndLname(fname, lname, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/department/{department}")
     public ResponseEntity<List<Employee>> getEmployeeByDepartment(@PathVariable String department, @RequestParam Integer pageNumber, @RequestParam Integer pageSize){
-        System.out.println("Getting employees from " + department +" department...");
+        System.out.println("Getting employees from department ==> "+ department);
         return new ResponseEntity<>(employeeService.getEmployeesByDepartment(department, pageNumber, pageSize), HttpStatus.OK);
     }
 
@@ -90,26 +91,34 @@ public class EmployeesController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee){
+    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody EmployeeRequest request){
         System.out.println("Saving employee details...");
-//        Department dept = new Department();
-//        dept.setDepartment(employeeRequest.getDepartment());
-//        //departmentService.createDepartment(dept);
-//        departmentRepository.save(dept);
-//        Employee employee = new Employee(employeeRequest);
-//        employee.setDepartment(dept);
-//        System.out.println("Employee details..."+employee);
+        Department existingDept = departmentService.getDepartment(request.getDepartment());
+        System.out.println("existingDept --> " + existingDept);
+        Employee employee = new Employee(request);
+        if (existingDept == null){
+            Department dept = new Department();
+            dept.setName(request.getDepartment());
+            departmentRepository.save(dept);
+            employee.setDepartment(dept);
+        } else {
+            employee.setDepartment(existingDept);
+        }
+
+        System.out.println("Employee details... "+employee);
         employeeService.createEmployee(employee);
+        // TODO: save both entities once instead of saving separately
         return new ResponseEntity<>(employee, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee){
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee, @PathVariable Long id){
         System.out.println("Updating employee with ID " + employee.getId() + "...");
+        employee.setId(id);
         return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/del/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id){
         System.out.println("Deleting employee with ID " + id + "...");
         return new ResponseEntity<>(employeeService.deleteEmployeeById(id) + " employee(s) with ID "+ id +" deleted successfully", HttpStatus.OK);

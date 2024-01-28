@@ -31,9 +31,16 @@ public interface EmployeeRepository extends PagingAndSortingRepository<Employee,
     @Query("from tbl_employee where isDeleted = :isDeleted")
     Page<Employee> getValidEmployees(Integer isDeleted, Pageable pages);
 
-    List<Employee> findByDepartment(String department, Pageable pages);
+    List<Employee> findByDepartmentId(Integer department, Pageable pages);
 
-    //List<Employee> findByDepartmentName(String department, Pageable pages);
+    // Get Name from the Department object
+    // This method works just like getEmployeesByDeptName below
+    List<Employee> findByDepartmentName(String department, Pageable pages);
+
+    // JPQL Join query in Data JPA
+    // This method is a JPQL implementation of findByDepartmentName above
+    @Query("from tbl_employee where department.name = :department")
+    List<Employee> getEmployeesByDeptName(String department, Pageable pages);
 
     List<Employee> findByAddressContaining(String keyword, Pageable pages);
 

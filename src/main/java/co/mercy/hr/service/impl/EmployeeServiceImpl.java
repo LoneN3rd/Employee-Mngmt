@@ -52,7 +52,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getEmployeesByDepartment(String department, int pageNumber, int pageSize) {
         Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
-        return employeeRepository.findByDepartment(department, pages);
+        //return employeeRepository.findByDepartmentName(department, pages);
+        return employeeRepository.getEmployeesByDeptName(department, pages);
     }
 
     @Override

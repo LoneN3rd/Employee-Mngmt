@@ -48,10 +48,10 @@ public class Employee {
     @Email(message="Enter a valid email_address")
     private String emailAddress;
 
-    @NotBlank(message="department cannot be null")
-    //@JoinColumn(name = "department_id")
-    //@OneToOne
-    private String department;
+//    @NotNull(message="department cannot be null")
+    @JoinColumn(name = "department_id")
+    @OneToOne
+    private Department department;
 
     @Column(name="ref", updatable = false)
     @NotBlank(message = "ref cannot be blank")
@@ -69,8 +69,8 @@ public class Employee {
     private Integer isDeleted = 0; // TODO: ignore passed value
 
     public Employee(EmployeeRequest request) {
-        this.fname = request.getFname();
-        this.lname = request.getLname();
+        this.fname = request.getFirstName();
+        this.lname = request.getLastName();
         this.ref = request.getRef();
         this.isActive = request.getIsActive();
         this.createdBy = request.getCreatedBy();

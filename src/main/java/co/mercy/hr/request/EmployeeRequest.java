@@ -8,8 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmployeeRequest {
-    private String fname;
-    private String lname;
+    private String firstName;
+    private String lastName;
     private String department;
     private String ref;
     private Integer isActive = 1;

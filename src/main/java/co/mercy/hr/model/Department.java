@@ -17,6 +17,6 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "department cannot be null")
-    private String department;
+    @NotBlank(message = "department name cannot be null")
+    private String name;
 }
