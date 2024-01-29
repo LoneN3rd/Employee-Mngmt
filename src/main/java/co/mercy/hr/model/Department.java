@@ -19,4 +19,7 @@ public class Department {
 
     @NotBlank(message = "department name cannot be null")
     private String name;
+
+    // @OneToOne(mappedBy = "department")
+    // private Employee employee;
 }

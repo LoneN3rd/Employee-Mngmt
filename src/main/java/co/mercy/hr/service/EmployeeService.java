@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface EmployeeService {
     List<Employee> getEmployees(int pageNumber, int pageSize);
+    List<Employee> getInactiveEmployees(int pageNumber, int pageSize);
     Optional<Employee> getEmployee(Long id);
     List<Employee> getEmployeesByFnameOrLname(String fname, String lname, int pageNumber, int pageSize);
     Employee createEmployee(Employee employee);

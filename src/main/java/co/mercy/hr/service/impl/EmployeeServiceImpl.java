@@ -1,5 +1,6 @@
 package co.mercy.hr.service.impl;
 
+import co.mercy.hr.dao.EmployeeDaoImpl;
 import co.mercy.hr.model.Employee;
 import co.mercy.hr.repository.EmployeeRepository;
 import co.mercy.hr.service.EmployeeService;
@@ -16,11 +17,24 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmployeeDaoImpl employeeDao;
+
     @Override
     public List<Employee> getEmployees(int pageNumber, int pageSize) {
         Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
         // return employeeRepository.findAll(pages).getContent();
         return employeeRepository.getValidEmployees(0, pages).getContent();
+    }
+
+    @Override
+    public List<Employee> getInactiveEmployees(int pageNumber, int pageSize) {
+        Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
+        // DAO Demo -- @NamedQuery in Entity class
+        // return employeeDao.getInactiveEmployees(pages);
+        // Native Query Demo -- @NamedQuery and @NamedNativeQuery in Entity class, either works
+        return employeeRepository.getAllInactiveEmployees(pages);
     }
 
     @Override
@@ -52,7 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getEmployeesByDepartment(String department, int pageNumber, int pageSize) {
         Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
-        //return employeeRepository.findByDepartmentName(department, pages);
+        // return employeeRepository.findByDepartmentName(department, pages); // also works
         return employeeRepository.getEmployeesByDeptName(department, pages);
     }
 
@@ -68,4 +82,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         // Sort sort = Sort.by(Sort.Direction.DESC, "id");
         return employeeRepository.findByAddressContaining(keyword, pages);
     }
+
+
 }

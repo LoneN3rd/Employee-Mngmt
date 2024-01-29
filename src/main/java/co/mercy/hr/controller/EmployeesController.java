@@ -123,4 +123,10 @@ public class EmployeesController {
         System.out.println("Deleting employee with ID " + id + "...");
         return new ResponseEntity<>(employeeService.deleteEmployeeById(id) + " employee(s) with ID "+ id +" deleted successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/all/inactive")
+    public ResponseEntity<List<Employee>> getInactive(@RequestParam Integer pageNumber, @RequestParam Integer pageSize){
+        System.out.println("Getting inactive employees");
+        return new ResponseEntity<>(employeeService.getInactiveEmployees(pageNumber, pageSize), HttpStatus.OK);
+    }
 }

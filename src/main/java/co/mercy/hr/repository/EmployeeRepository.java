@@ -16,8 +16,15 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepository extends PagingAndSortingRepository<Employee, Long> {
 
-    // @Query("select e from tbl_employee e where e.fname = ?1 or e.lname = ?2")
-    // List<Employee> findByFnameOrLname(String fname, String lname);
+    // JPA Native Query
+    // @Query(value = "select * from tbl_employee e where e.fname = ?1 or e.lname = ?2", nativeQuery = true)
+    // List<Employee> findByName(String fname, String lname, Pageable pages);
+
+    // JPQL query
+    // @Query("from tbl_employee e where e.fname = ?1 or e.lname = ?2")
+    // List<Employee> findByName(String fname, String lname);
+
+    List<Employee> getAllInactiveEmployees(Pageable pages);
 
     List<Employee> findByFnameOrLname(String fname, String lname, Pageable pages);
 
@@ -25,10 +32,10 @@ public interface EmployeeRepository extends PagingAndSortingRepository<Employee,
 
     @Modifying
     @Transactional
-    @Query("update tbl_employee set isDeleted=1 where id = :id")
+    @Query("update employee set isDeleted=1 where id = :id")
     Integer deleteEmployeeById(Long id);
 
-    @Query("from tbl_employee where isDeleted = :isDeleted")
+    @Query("from employee where isDeleted = :isDeleted")
     Page<Employee> getValidEmployees(Integer isDeleted, Pageable pages);
 
     List<Employee> findByDepartmentId(Integer department, Pageable pages);
@@ -39,7 +46,7 @@ public interface EmployeeRepository extends PagingAndSortingRepository<Employee,
 
     // JPQL Join query in Data JPA
     // This method is a JPQL implementation of findByDepartmentName above
-    @Query("from tbl_employee where department.name = :department")
+    @Query("from employee where department.name = :department")
     List<Employee> getEmployeesByDeptName(String department, Pageable pages);
 
     List<Employee> findByAddressContaining(String keyword, Pageable pages);

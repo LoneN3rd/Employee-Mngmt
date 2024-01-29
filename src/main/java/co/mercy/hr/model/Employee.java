@@ -19,12 +19,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity(name = "tbl_employee")
+@Entity(name = "employee")
 @Table(name = "tbl_employee")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
+@NamedNativeQuery(name = "getAllInactiveEmps", query = "select * from tbl_employee where is_active = 0", resultClass = Employee.class) // query contains the table name and column names
+@NamedQuery(name = "Employee.getAllInactiveEmployees", query = "from employee where isActive = 0") // query contains the entity name and field names
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +34,11 @@ public class Employee {
     private Long id;
 
     @NotBlank(message="first_name cannot be null")
-//    @JsonProperty("first_name")
+    // @JsonProperty("first_name")
     private String fname;
 
     @NotBlank(message="last_name cannot be null")
-//    @JsonProperty("last_name")
+    // @JsonProperty("last_name")
     private String lname;
 
     @NotBlank(message="address cannot be null")
