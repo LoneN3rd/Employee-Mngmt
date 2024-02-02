@@ -11,6 +11,7 @@ A simple Springboot project that provides ways to manage employees and departmen
   - Get employees by first name OR last name
   - Get employees by first name AND last name
   - Get employees by department
+  - Get employess whose address contains a given keyword
 - gets app info (demonstrates use of enviroment properties)
 
 ## Department
@@ -27,6 +28,7 @@ A simple Springboot project that provides ways to manage employees and departmen
 - Data persistence using MySQL
   - JPA, JPQL
   - One to one mapping
+  - Custom queries
 - Input validation
 - Pagination and sorting
 - Documentation using Swagger
