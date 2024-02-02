@@ -2,7 +2,6 @@ package co.mercy.hr.model;
 
 import co.mercy.hr.request.EmployeeRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -30,7 +29,7 @@ import java.util.UUID;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(notes = "This is a unique identifier for an employee")
+    //@ApiModelProperty(notes = "This is a unique identifier for an employee")
     private Long id;
 
     @NotBlank(message="first_name cannot be null")
@@ -55,8 +54,8 @@ public class Employee {
     @OneToOne
     private Department department;
 
-    @Column(name="ref", updatable = false)
     @NotBlank(message = "ref cannot be blank")
+    @Column(name="ref", nullable = false, updatable = false)
     private String ref; // TODO: autogenetate
     private Integer isActive = 1; // TODO: ignore passed value
     private String createdBy;
@@ -75,6 +74,7 @@ public class Employee {
         this.lname = request.getLastName();
         this.ref = request.getRef();
         this.isActive = request.getIsActive();
+        this.isDeleted = request.getIsDeleted();
         this.createdBy = request.getCreatedBy();
         this.address = request.getAddress();
         this.role = request.getRole();

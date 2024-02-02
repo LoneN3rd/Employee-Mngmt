@@ -7,6 +7,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
+  mvc:
+    throw-exception-if-no-handler-found: true
+    static-path-pattern: /static
 app:
   name: HRMS
   version: 0.0.1

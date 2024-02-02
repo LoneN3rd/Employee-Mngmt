@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +44,7 @@ public class EmployeesController {
     public String getAppInfo(){
         return appName + " v" + appVersion;
     }
+
     @GetMapping("/all")
     public ResponseEntity<List<Employee>> getEmployees(@RequestParam Integer pageNumber, @RequestParam Integer pageSize){
         System.out.println("Getting all employees");
@@ -93,13 +93,17 @@ public class EmployeesController {
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@Valid @RequestBody EmployeeRequest request){
         System.out.println("Saving employee details...");
-        Department existingDept = departmentService.getDepartment(request.getDepartment());
+        Department existingDept = departmentService.getDepartmentByName(request.getDepartment());
         System.out.println("existingDept --> " + existingDept);
         Employee employee = new Employee(request);
         if (existingDept == null){
             Department dept = new Department();
             dept.setName(request.getDepartment());
-            departmentRepository.save(dept);
+            dept.setCreatedBy(request.getCreatedBy());
+            //dept.setIsActive(request.getIsActive());
+            //dept.setIsDeleted(request.getIsDeleted());
+            dept.setRef(request.getRef());
+            departmentService.createDepartment(dept);
             employee.setDepartment(dept);
         } else {
             employee.setDepartment(existingDept);
@@ -112,9 +116,29 @@ public class EmployeesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee, @PathVariable Long id){
-        System.out.println("Updating employee with ID " + employee.getId() + "...");
+    public ResponseEntity<Employee> updateEmployee(@Valid @RequestBody EmployeeRequest request, @PathVariable Long id){
+        System.out.println("Updating employee with ID " + id + "...");
+        Employee employee = new Employee(request);
         employee.setId(id);
+        Department existingDept = departmentService.getDepartmentByName(request.getDepartment());
+        if (existingDept == null){
+            Department dept = new Department();
+            dept.setName(employee.getDepartment().getName());
+            dept.setCreatedBy(employee.getCreatedBy());
+            dept.setRef(employee.getRef());
+            departmentService.createDepartment(dept);
+            employee.setDepartment(dept);
+        } else {
+            employee.setDepartment(existingDept);
+        }
+
+        System.out.println("employee --> " + employee);
+
+        System.out.println("Updating employee details... "+ employee);
+        employeeService.updateEmployee(employee);
+        System.out.println("Updated employee details... "+ employee);
+        // TODO: save both entities once instead of saving separately
+
         return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
     }
 

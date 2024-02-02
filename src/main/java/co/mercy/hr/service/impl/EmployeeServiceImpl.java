@@ -24,7 +24,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getEmployees(int pageNumber, int pageSize) {
         Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
-        // return employeeRepository.findAll(pages).getContent();
         return employeeRepository.getValidEmployees(0, pages).getContent();
     }
 
@@ -32,9 +31,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> getInactiveEmployees(int pageNumber, int pageSize) {
         Pageable pages = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
         // DAO Demo -- @NamedQuery in Entity class
-        // return employeeDao.getInactiveEmployees(pages);
+        return employeeDao.getInactiveEmployees(pages);
         // Native Query Demo -- @NamedQuery and @NamedNativeQuery in Entity class, either works
-        return employeeRepository.getAllInactiveEmployees(pages);
+        //return employeeRepository.getAllInactiveEmployees(pages);
     }
 
     @Override

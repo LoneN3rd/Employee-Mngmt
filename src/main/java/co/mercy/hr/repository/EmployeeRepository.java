@@ -32,7 +32,7 @@ public interface EmployeeRepository extends PagingAndSortingRepository<Employee,
 
     @Modifying
     @Transactional
-    @Query("update employee set isDeleted=1 where id = :id")
+    @Query("update employee set isDeleted=1, isActive = 0 where id = :id")
     Integer deleteEmployeeById(Long id);
 
     @Query("from employee where isDeleted = :isDeleted")

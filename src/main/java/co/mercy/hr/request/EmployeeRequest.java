@@ -13,6 +13,7 @@ public class EmployeeRequest {
     private String department;
     private String ref;
     private Integer isActive = 1;
+    private Integer isDeleted = 0;
     private String createdBy;
     private String address;
     private String role;
