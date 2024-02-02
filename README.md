@@ -33,3 +33,13 @@ A simple Springboot project that provides ways to manage employees and departmen
 
 # DB Used
 MySQL
+
+# Other Info
+I used swagger OpenAPI definition
+Access swagger urls as follows
+- http://host:port/context-path/v3/api-docs
+- http://host:port/context-path/swagger-ui/index.html
+
+I set context path in properties.yaml file as /hr/v1 and port to 9090, so my swagger paths are 
+- http://localhost:9090/hr/v1/v3/api-docs
+- http://localhost:9090/hr/v1/swagger-ui/index.html
