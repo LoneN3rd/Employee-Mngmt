@@ -1,5 +1,5 @@
-# Employee Info Management
-A simple Springboot project that provides ways to manage employes and departments
+# Employee Management
+A simple Springboot project that provides ways to manage employees and departments
 ## Employee
 - create an employee,
 - update employee information,
